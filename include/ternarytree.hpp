@@ -21,7 +21,7 @@
 /*!
 *\file ternarytree.hpp
 *\author Quentin Putaud
-*\version 1.0
+*\version 1.1
 *\date 01/05/2020
 */
 
@@ -33,6 +33,11 @@
 #include <fstream>
 #include <vector>
 
+/*!
+*\namespace qplib Namespace of my personal lib
+*/
+namespace qplib
+{
 
 /*!
 *\class TernaryTree ternarytree.hpp "ternarytree.hpp"
@@ -318,7 +323,7 @@ private:
                         nodes.push_back(nodes[father_id]->_next);
                         break;
                     default: //
-                        //not supposed to go here
+                        //not supposed to go there
                         break;
                     }
                     nodes[nodes.size()-1]->_op=STRING_TO_OP(str_op);
@@ -360,15 +365,18 @@ public:
     *\param[in] path const std::string& : path to the file where the tree will be saved.
     *\param[in] OP_TO_STRING std::string(OP) : a function to cast an OP variable into an std::string.
     *\param[in] STORED_TO_STRING std::string(STORED) : a function to cast a STORED variable into an std::string.
+    *\param[in] reset_cursor bool : set by default to true. If true the fonction will place the cursor to the root of the tree before starting.
     *\return void
     */
-    void saveToFile(const std::string& path,std::string OP_TO_STRING(OP),std::string STORED_TO_STRING(STORED))
+    void saveToFile(const std::string& path,std::string OP_TO_STRING(OP),std::string STORED_TO_STRING(STORED),bool reset_cursor=true)
     {
+        if(reset_cursor)
+            resetCursor();
         std::ofstream output_file(path.c_str());
         unsigned int n=0;
         if(output_file)
         {
-            saveToFile(_first,n,0,0,output_file,OP_TO_STRING,STORED_TO_STRING);
+            saveToFile(_cursor,n,0,0,output_file,OP_TO_STRING,STORED_TO_STRING);
         }
         output_file.close();
     }
@@ -404,15 +412,17 @@ public:
     }
 
     /*!
-    *\brief Works from the subtree pointed by the cursor.
-    * Add a collection of OP to the subtree's structure if it s not already in.
+    *\brief Add a collection of OP to the tree's structure if it s not already in.
     * Set the cursor to the matching node.
     *\param[in] ops const OP_COL& : the collection of OP
-    *\return bool : true if the subtree's structure as been modified, false if the collection of OP was already in the subtree.
+    *\param[in] reset_cursor bool : set by default to true. If true the fonction will place the cursor to the root of the tree before starting.
+    *\return bool : true if the tree's structure as been modified, false if the collection of OP was already in the tree's structure.
     */
     template<class OP_COL>
-    bool add(const OP_COL& ops)
+    bool add(const OP_COL& ops, bool reset_cursor=true)
     {
+        if(reset_cursor)
+            resetCursor();
         typename OP_COL::const_iterator it=ops.begin();
         if(!find(ops,it,true))
         {
@@ -457,14 +467,30 @@ public:
     /*!
     *\brief Set the STORED variable of the node pointed by the cursor.
     * Throw an std::runetime_error exception if the tree is empty.
-    *\param[in] stored const STORED& : the STORED variable.
+    *\param[in] stored STORED : the STORED variable.
     *\return void
     */
-    void set(const STORED& stored)
+    void set(STORED stored)
     {
         if(_cursor==nullptr)
             throw std::runtime_error("Use of TernaryTree.set(const STORED& stored) when the tree is empty.");
         _cursor->_stored=stored;
+    }
+
+    /*!
+    *\brief Add a collection of OP to the tree's structure if it s not already in.
+    * Set the cursor to the matching node.
+    * Set the STORED variable of the node pointed by the cursor
+    *\param[in] ops const OP_COL& : the collection of OP
+    *\param[in] stored STORED : the STORED variable
+    *\param[in] reset_cursor bool : set by default to true. If true the fonction will place the cursor to the root of the tree before starting.
+    *\return bool : true if the tree's structure as been modified, false if the collection of OP was already in the tree's structure.
+    */
+    template<class OP_COL>
+    bool add(const OP_COL& ops,STORED stored, bool reset_cursor=true)
+    {
+        add(ops,reset_cursor);
+        set(stored);
     }
 
     /*!
@@ -477,15 +503,17 @@ public:
     }
 
     /*!
-    *\brief Works from the subtree pointed by the cursor.
-    * Test if a collection of OP is in the subtree's structure.
+    *\brief Test if a collection of OP is in the tree's structure.
     * Set the cursor to the best matching node.
     *\param[in] ops const OP_COL& : the collection of OP
-    *\return bool : true if the collection of OP is in the subtree's structure, false if not.
+    *\param[in] reset_cursor bool : set by default to true. If true the fonction will place the cursor to the root of the tree before starting.
+    *\return bool : true if the collection of OP is in the tree's structure, false if not.
     */
     template<class OP_COL>
-    bool find(const OP_COL& ops)
+    bool find(const OP_COL& ops, bool reset_cursor=true)
     {
+        if(reset_cursor)
+            resetCursor();
         typename OP_COL::const_iterator it=ops.begin();
         return find(ops,it,false);
     }
@@ -730,5 +758,7 @@ public:
         throw std::runtime_error("Use of TernaryTree.getNextOp() when the tree is empty.");
     }
 };
+
+} // end namespace
 
 #endif // TERNARYTREE_HPP_INCLUDED
