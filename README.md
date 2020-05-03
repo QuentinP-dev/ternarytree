@@ -29,7 +29,7 @@ The TernaryTree class is defined like this :
 template <class OP,class STORED> class TernaryTree
 ```
 
-OP is the type with which the tree will perform sorting operations. It can be any type as long as the operators < == and > are defined for that type.
+OP is the type with which the tree will perform sorting operations. It can be any type as long as the operators '<' '==' and '>' are defined for that type.
 
 STORED is the type that will stored in the tree's nodes. It can be anything.
 
