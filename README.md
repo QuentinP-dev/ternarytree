@@ -46,7 +46,7 @@ TernaryTree<char,std::vector<double> > ternarytree2;
 // must be defined.
 TernaryTree<MyClass1,MyClass2> ternarytree3;
 ```
-##### b. Cursor's operation
+##### b. Cursor's operations
 
 The TernaryTree class works with a cursor that point to a node of the tree.
 
@@ -100,6 +100,43 @@ phone_to_name.add(phone_number,"Mike");
 The find fonction works pretty in the same way, it will test if the giving collection of OP is in the tree structure or not and place the cursor to the BEST matching node (the cursor wont be on the matching node if the collection of OP is not in the tree's structure) 
 
 ##### d. Save and load a TernaryTree to a file
+
+The TernaryTree class allow you to save and load your trees in files. Since the tree have to save template types (and it can be custom objects), the saveToFile and loadFromFile fonctions take as a parameters functions to convert OP and STORED type into std::string and vice versa.
+
+Note that, due to parsing operation and no matter how you save your OP and STORED type, the std::string you will get to build your OP and STORED variables will only contains spaces as delimiter character.
+
+A little example to be more clear, if you have :
+
+```c++
+struct Stored
+{
+	int a;
+	char b;
+};
+
+std::string storedToString(const Stored& s)
+{
+	std::string r_str;
+	r_str+="a : ";
+	r_str+=s.a;
+	r_str+="\nb : ";
+	r_str+=s.b;
+	return r_str;
+}
+```
+You will have in the file something like :
+```
+a : 8
+b : p
+```
+
+But the std::string given to your STORED stringToStored(const std::string& str) function will be :
+```
+a : 8 b : p
+```
+
+Note that std::stringstream can be really usefull to make thoose fonctions done.
+
 
 ## Build the documentation
 
