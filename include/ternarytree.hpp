@@ -22,7 +22,7 @@
 *\file ternarytree.hpp
 *\author Quentin Putaud
 *\version 1.1
-*\date 01/05/2020
+*\date 03/05/2020
 */
 
 
@@ -32,12 +32,6 @@
 #include <stdexcept>
 #include <fstream>
 #include <vector>
-
-/*!
-*\namespace qplib Namespace of my personal lib
-*/
-namespace qplib
-{
 
 /*!
 *\class TernaryTree ternarytree.hpp "ternarytree.hpp"
@@ -758,7 +752,5 @@ public:
         throw std::runtime_error("Use of TernaryTree.getNextOp() when the tree is empty.");
     }
 };
-
-} // end namespace
 
 #endif // TERNARYTREE_HPP_INCLUDED
