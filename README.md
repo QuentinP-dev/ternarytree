@@ -10,6 +10,7 @@ Download the repository with your browser or with git using :
 
 ```
 git clone https://github.com/QuentinP-dev/ternarytree.git
+```
 
 #### 2. Link the header file to your project
 
