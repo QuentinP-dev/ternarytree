@@ -56,12 +56,12 @@ The TernaryTree class works with a cursor that points to a node of the tree.
 
 There are several operations like **goToBigger** (which set the cursor to the bigger node) or **resetCursor** (which set the cursor to the root of the tree) to handle this cursor.
 
-Fonctions **find**, **add** and **saveToFile** have a pre-set parameter which makes them perform a **resetCursor** before starting. If this parameter if set to false, the functions will only work on the subtree that has the node pointed by the cursor as root.
-If you do want to run those functions on the subtree, then add *false* at the end of the function call. 
+Fonctions **find**, **add**, **saveToFile** and **remove** have a pre-set parameter which makes them perform a **resetCursor** before starting. If this parameter if set to false, the functions will only work on the subtree that has the node pointed by the cursor as root.
+If you do want to run those functions on the subtree, then add *false* at the end of the function call.
 
 #### 3. Add and find an element
 
-A ternary tree may be seen as a multi layer binary tree. As the operations are made on an *OP* type, a collection of *OP* is needed to run an **add** or a **find** function.
+A ternary tree may be seen as a multi layer binary tree. As the operations are made on an *OP* type, a collection of *OP* is needed to run an **add**, **find** or a **remove** function.
 
 The TernaryTree class uses iterators to get each element of the given collection so you can pass any container you want to those functions, as long as the container does support iterator's operations.
 
@@ -103,7 +103,26 @@ phone_number={0,4,7,3,4,8,6,1,4,0};
 phone_to_name.add(phone_number,"Mike");
 ```
 
-The **find** function pretty much works the same way : it tests if the given collection of *OP* is in the tree structure or not, and places the cursor to the BEST matching node (the cursor won't be on the matching node if the collection of *OP* is not in the tree's structure).
+Now if we want to remove John's number, we can do as :
+
+```c++
+phone_number_of_john={0,4,7,3,4,8,6,1,4,0};
+//move the cursor to the node that match the best the John's number
+if(phone_to_name.find(phone_number_of_john)) // true if the number is on the tree structure
+{
+	//remove the node pointed by the cursor
+	phone_to_name.remove();
+}
+```
+We can also do this in one call :
+```c++
+phone_number_of_john={0,4,7,3,4,8,6,1,4,0};
+//here remove will first find the John's number and then remove it from the tree
+if(phone_to_name.remove(phone_number_of_john))
+{
+	//the number has been removed
+}
+```
 
 #### 4. Save and load a TernaryTree to a file
 
@@ -142,6 +161,18 @@ a : 8 b : p
 ```
 
 Note that *std::stringstream* can be really useful to have those functions done.
+
+#### 5. Light ternary trees
+
+The functions **optimize** and **remove** need additional variables to work. It means that each node of the tree will use 25 bytes to store those variables.
+If you do not need the **optimize** and the **remove** functions, you can save your memory by defining the keyword TERNARYTREE_LIGHT.
+```c++
+//must be before the inclution of ternarytree.hpp
+#define TERNARYTREE_LIGHT
+#include "path/to/the/file/ternarytree.hpp"
+```
+
+Note that the **loadFromFile** and **saveToFile** functions can be used to cast a light ternary tree into a normal one and vice versa.
 
 
 ## Build the documentation
