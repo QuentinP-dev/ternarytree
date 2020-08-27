@@ -33,12 +33,6 @@
 #include <deque>
 
 /*!
-*\namespace qplib Namespace of my personal lib
-*/
-namespace qplib
-{
-
-/*!
 *\class TernaryTree ternarytree.hpp "ternarytree.hpp"
 *\brief A template class to create and use ternary trees.
 */
@@ -1092,7 +1086,5 @@ public:
 		throw std::runtime_error("Use of TernaryTree.getNextOp() when the tree is empty.");
 	}
 };
-
-} // end namespace
 
 #endif // TERNARYTREE_HPP_INCLUDED
