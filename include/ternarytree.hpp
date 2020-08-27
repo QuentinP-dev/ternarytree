@@ -20,8 +20,8 @@
 /*!
 *\file ternarytree.hpp
 *\author Quentin Putaud
-*\version 1.2
-*\date 08/05/2020
+*\version 1.2.1
+*\date 27/08/2020
 */
 
 
@@ -31,6 +31,12 @@
 #include <stdexcept>
 #include <fstream>
 #include <deque>
+
+/*!
+*\namespace qplib Namespace of my personal lib
+*/
+namespace qplib
+{
 
 /*!
 *\class TernaryTree ternarytree.hpp "ternarytree.hpp"
@@ -682,8 +688,6 @@ public:
 				#ifndef TERNARYTREE_LIGHT
 				_cursor->_father_link=(&_first);
 				#endif // TERNARYTREE_LIGHT
-
-				it++;
 			}
 			else if(_cursor->_op<*it) //add to greater
 			{
@@ -699,8 +703,6 @@ public:
 
 				_cursor=_cursor->_greater;
 				_cursor->_op=*it;
-
-				it++;
 			}
 			else if(_cursor->_op>*it) // add to smaller
 			{
@@ -716,10 +718,8 @@ public:
 
 				_cursor=_cursor->_smaller;
 				_cursor->_op=*it;
-
-				it++;
 			}
-			while(it!=ops.end())
+			while(it+1!=ops.end())
 			{
 				_cursor->_next=new Node();
 				_nb_node++;
@@ -731,10 +731,9 @@ public:
 				_cursor->_next->_father_link=(&_cursor->_next);
 				#endif // TERNARYTREE_LIGHT
 
+				it++;
 				_cursor=_cursor->_next;
 				_cursor->_op=*it;
-
-				it++;
 			}
 
 			#ifndef TERNARYTREE_LIGHT
@@ -1093,5 +1092,7 @@ public:
 		throw std::runtime_error("Use of TernaryTree.getNextOp() when the tree is empty.");
 	}
 };
+
+} // end namespace
 
 #endif // TERNARYTREE_HPP_INCLUDED
